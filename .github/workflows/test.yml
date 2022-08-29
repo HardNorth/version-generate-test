@@ -1,0 +1,46 @@
+name: Test
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Test'
+        required: false
+
+env:
+  VERSION_FILE: package.json
+  VERSION_EXTRACT_PATTERN: '"version": "([^"]+)",'
+  VERSION_REPLACE_PATTERN: '"version": "\1",'
+  GH_USER_NAME: github.actor
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    # Prepare
+    - uses: actions/checkout@v2
+
+    - name: Setup git credentials
+      run: |
+        git config user.name 'Vadzim Hushchanskou'
+        git config user.email 'vadzim.hushchanskou@gmail.com'
+        git config user.password ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v1
+      with:
+        node-version: 12.x
+
+    - name: Generate versions
+      uses: HardNorth/github-version-generate@975d8c2
+      with:
+        version-source: file
+        version-file: ${{ env.VERSION_FILE }}
+        version-file-extraction-pattern: ${{ env.VERSION_EXTRACT_PATTERN }}
+        data-extract:
+          description_var:
+            path: ${{ env.VERSION_FILE }}
+            pattern: '(?<=\"description\": \")[^\"]+'
+            extract-name: false
+            extract-all: false
