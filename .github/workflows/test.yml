@@ -41,7 +41,7 @@ jobs:
         data-extract: true
         data-extract-name: first_variable
         data-extract-paths: ${{ env.VERSION_FILE }}
-        data-extract-patterns: '(?<=\"description\": \")[^\"]+'
+        data-extract-patterns: '/(?<=\"description\": \")[^\"]+/'
     - name: echo
       run: |
         echo '${{ env.FIRST_VARIABLE }}'
