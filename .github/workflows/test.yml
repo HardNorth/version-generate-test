@@ -33,14 +33,16 @@ jobs:
         node-version: 12.x
 
     - name: Generate versions
-      uses: HardNorth/github-version-generate@975d8c2
+      uses: HardNorth/github-version-generate@v1.2.0
       with:
         version-source: file
         version-file: ${{ env.VERSION_FILE }}
         version-file-extraction-pattern: ${{ env.VERSION_EXTRACT_PATTERN }}
-        data-extract:
-          description_var:
-            path: ${{ env.VERSION_FILE }}
-            pattern: '(?<=\"description\": \")[^\"]+'
-            extract-name: false
-            extract-all: false
+        data-extract: true
+        data-extract-name: first_variable
+        data-extract-paths: ${{ env.VERSION_FILE }}
+        data-extract-patterns: '(?<=\"description\": \")[^\"]+'
+    - name: echo
+      run: |
+        echo '${{ env.FIRST_VARIABLE }}'
+        echo '${{ env.RELEASE_VERSION_PATCH }}'
