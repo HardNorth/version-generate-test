@@ -18,31 +18,32 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    # Prepare
-    - uses: actions/checkout@v2
+      # Prepare
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
-    - name: Setup git credentials
-      run: |
-        git config user.name 'Vadzim Hushchanskou'
-        git config user.email 'vadzim.hushchanskou@gmail.com'
-        git config user.password ${{ secrets.GITHUB_TOKEN }}
+      - name: Setup git credentials
+        run: |
+          git config user.name 'Vadzim Hushchanskou'
+          git config user.email 'vadzim.hushchanskou@gmail.com'
+          git config user.password ${{ secrets.GITHUB_TOKEN }}
 
-    - name: Set up Node.js
-      uses: actions/setup-node@v1
-      with:
-        node-version: 12.x
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
 
-    - name: Generate versions
-      uses: HardNorth/github-version-generate@v1.2.0
-      with:
-        version-source: file
-        version-file: ${{ env.VERSION_FILE }}
-        version-file-extraction-pattern: ${{ env.VERSION_EXTRACT_PATTERN }}
-        data-extract: true
-        data-extract-name: first_variable
-        data-extract-paths: ${{ env.VERSION_FILE }}
-        data-extract-patterns: '/(?<=\"description\": \")[^\"]+/'
-    - name: echo
-      run: |
-        echo '${{ env.FIRST_VARIABLE }}'
-        echo '${{ env.RELEASE_VERSION_PATCH }}'
+      - name: Generate versions
+        uses: HardNorth/github-version-generate@v1
+        with:
+          version-source: file
+          version-file: ${{ env.VERSION_FILE }}
+          version-file-extraction-pattern: ${{ env.VERSION_EXTRACT_PATTERN }}
+          data-extract: true
+          data-extract-name: first_variable
+          data-extract-paths: ${{ env.VERSION_FILE }}
+          data-extract-patterns: '/(?<=\"description\": \")[^\"]+/'
+      - name: echo
+        run: |
+          echo '${{ env.FIRST_VARIABLE }}'
+          echo '${{ env.RELEASE_VERSION_PATCH }}'
