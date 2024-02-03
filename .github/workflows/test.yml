@@ -45,5 +45,7 @@ jobs:
           data-extract-patterns: '/(?<=\"description\": \")[^\"]+/'
       - name: echo
         run: |
-          echo '${{ env.FIRST_VARIABLE }}'
-          echo '${{ env.RELEASE_VERSION_PATCH }}'
+          echo 'Description: ${{ env.FIRST_VARIABLE }}'
+          echo 'Major version: ${{ env.RELEASE_VERSION_MAJOR }}'
+          echo 'Minor version: ${{ env.RELEASE_VERSION_MINOR }}'
+          echo 'Patch version: ${{ env.RELEASE_VERSION_PATCH }}'
